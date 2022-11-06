@@ -1,0 +1,3 @@
+processed_petitions/
+Prediction/*.csv
+dataToPredict/*.csv
