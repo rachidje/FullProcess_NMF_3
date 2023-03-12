@@ -13,20 +13,25 @@ import pickle
 # fr_c21=> max_f=2257, min_df= 249 max_df=0.75 23 topics
 # fr_1821=> max_f= 2071, min_df= 178, max_df=0.75 24 topics
 # fr_1417=> max_f= 1871, min_df= 57, max_df= 0.75 22 topics
+# fr_C22 => max_f = 1807, min-d= 207, max_df= 0.75 22 topics
+# fr_1922 => max_f = 1857, min-d= 184, max_df= 0.75 23 topics
+# fr_1518 => max_f = 2004, min-d= 71, max_df= 0.75 20 topics
 
 # es_c20=> max_f= 1615, min_df= 95 max_df=0.75 22 topics
 # en_C21=> max_f= 995 min_df= 591 max_df= 0.75 23 topics
 
-years = 2021
-nbSignatures = 0
-max_features = 995
-min_df = 591
+language = 'fr'
+years = [2015, 2018]
+nbSignatures = 50
+max_features = 2084
+min_df = 71
 max_df = 0.75
-n_components = 23
-df_keywords_path = "models/en/df_keywords_EN_CS_C21.csv"
-model_pickle_path = 'models/en/Model_EN_CS_C21.pickle'
+n_components = 20
+model = 'FR_CS_1518'
+df_keywords_path = f"models/{language}/df_keywords_{model}.csv"
+model_pickle_path = f'models/{language}/Model_{model}.pickle'
 
-df = pd.read_csv("processed_petitions/petitions_en_20221_processed.csv")
+df = pd.read_csv("processed_petitions/petitions_fr_20231_processed.csv")
 df = filterDf(df, years, nbSignatures)
 print(len(df))
 

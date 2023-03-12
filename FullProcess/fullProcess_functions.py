@@ -23,7 +23,7 @@ def getDataframe(path_file):
         df['year'] = pd.DatetimeIndex(df.date).year
     except AttributeError:
         pass
-    df = df.drop_duplicates(subset= ['patent_code'])
+    df = df.drop_duplicates(subset= ['id'])
 
     df['title_description'] = df['title'] + " " + df['description']
 

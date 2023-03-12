@@ -34,12 +34,12 @@ modelChoosen = models[language][id_cs]['model']
 df_keywords = models[language][id_cs]['keywords']
 
 #### A mettre en commentaire si le df_processed est deja fait
-# df = pd.read_csv(args['file'])
-# df['description'] = df['title'] + " " + df["description"]
+df = pd.read_csv(args['file'])
+df['description'] = df['title'] + " " + df["description"]
 
 #### A mettre en commentaire si le df_processed n'est pas fait
-df = pd.read_csv(f'processed_petitions/petitions_fr_20221_processed.csv')
-df = df.dropna(subset=['processed_text'])
+# df = pd.read_csv(f'processed_petitions/petitions_fr_20221_processed.csv')
+# df = df.dropna(subset=['processed_text'])
 
 df['dominant topic'] = ''
 df['dominant score'] = ''
@@ -99,4 +99,4 @@ for theme in themes:
     df[theme] = df['processed_text'].progress_apply(lambda text: getAllScores(text)[-1][theme])
 
 
-df.to_csv(f"Prediction/petitions_{language}_20221_predicted_{id_cs}.csv", index= False)
+df.to_csv(f"Prediction/petitions_{language}_20231_predicted_{id_cs}.csv", index= False)
