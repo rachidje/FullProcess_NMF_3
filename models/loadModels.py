@@ -42,6 +42,18 @@ def loadModels():
                 'FR_CS_1417' : {
                     'model': loadModel(frNmfPath + "Model_FR_CS_1417.pickle"),
                     'keywords': loadKeywords(frNmfPath + "df_keywords_FR_CS_1417.csv")
+                },
+                'FR_CS_1518' : {
+                    'model': loadModel(frNmfPath + "Model_FR_CS_1518.pickle"),
+                    'keywords': loadKeywords(frNmfPath + "df_keywords_FR_CS_1518.csv")
+                },
+                'FR_CS_1922' : {
+                    'model': loadModel(frNmfPath + "Model_FR_CS_1922.pickle"),
+                    'keywords': loadKeywords(frNmfPath + "df_keywords_FR_CS_1922.csv")
+                },
+                'FR_CS_C22' : {
+                    'model': loadModel(frNmfPath + "Model_FR_CS_C22.pickle"),
+                    'keywords': loadKeywords(frNmfPath + "df_keywords_FR_CS_C22.csv")
                 }
             },
             'es-ES': {

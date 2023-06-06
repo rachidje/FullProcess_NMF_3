@@ -34,12 +34,12 @@ modelChoosen = models[language][id_cs]['model']
 df_keywords = models[language][id_cs]['keywords']
 
 #### A mettre en commentaire si le df_processed est deja fait
-df = pd.read_csv(args['file'])
-df['description'] = df['title'] + " " + df["description"]
+# df = pd.read_csv(args['file'])
+# df['description'] = df['title'] + " " + df["description"]
 
 #### A mettre en commentaire si le df_processed n'est pas fait
-# df = pd.read_csv(f'processed_petitions/petitions_fr_20221_processed.csv')
-# df = df.dropna(subset=['processed_text'])
+df = pd.read_csv(f'processed_petitions/petitions_fr_20231_processed.csv')
+df = df.dropna(subset=['final_content'])
 
 df['dominant topic'] = ''
 df['dominant score'] = ''
@@ -72,9 +72,9 @@ elif language == 'en-US':
 
 #### A mettre en commentaire si le df_processed est deja fait
 ### On lance le fullProcess sur la colonne description
-df['processed_text'] = df['description'].progress_apply(lambda text: FPT.fullProcess(str(text)))
-df = df.dropna(subset= ['processed_text'])
-df.to_csv(f'Prediction/df_processed_{language}_20221_{id_cs}_fullProcess.csv', index= False)
+# df['final_content'] = df['description'].progress_apply(lambda text: FPT.fullProcess(str(text)))
+# df = df.dropna(subset= ['final_content'])
+# df.to_csv(f'Prediction/df_processed_{language}_{currentDate}_{id_cs}_fullProcess.csv', index= False)
 
 def getAllScores(text):
     npArray = getPredictionArray(modelChoosen, text)
@@ -89,14 +89,14 @@ def getAllScores(text):
 
 ##### On lance le apply pour obtenir le dominant topic et le score dominant
 print("Prediction des dominant topic")
-df['dominant topic'] = df['processed_text'].progress_apply(lambda text: getAllScores(text)[0])
+df['dominant topic'] = df['final_content'].progress_apply(lambda text: getAllScores(text)[0])
 print("Prediction des dominant score")
-df['dominant score'] = df['processed_text'].progress_apply(lambda text: getAllScores(text)[1])
+df['dominant score'] = df['final_content'].progress_apply(lambda text: getAllScores(text)[1])
 
 #### On lance le apply pour avoir le score pour chaque theme
 for theme in themes:
     print(theme)
-    df[theme] = df['processed_text'].progress_apply(lambda text: getAllScores(text)[-1][theme])
+    df[theme] = df['final_content'].progress_apply(lambda text: getAllScores(text)[-1][theme])
 
 
-df.to_csv(f"Prediction/petitions_{language}_20231_predicted_{id_cs}.csv", index= False)
+df.to_csv(f"Prediction/petitions_{language}_{currentDate}_predicted_{id_cs}.csv", index= False)

@@ -38,8 +38,8 @@ df = pd.read_csv(args['file'])
 df['description'] = df['title'] + " " + df["description"]
 
 #### A mettre en commentaire si le df n'est pas fait
-# df = pd.read_csv(f'processed_petitions/petitions_fr_202211_processed.csv')
-# df = df.dropna(subset=['final_content'])
+df = pd.read_csv(f'processed_petitions/petitions_fr_20231_processed.csv')
+df = df.dropna(subset=['final_content'])
 
 df['dominant topic'] = ''
 df['dominant score'] = ''
@@ -72,9 +72,9 @@ elif language == 'en-US':
 
 #### A mettre en commentaire si le df est deja fait
 ### On lance le fullProcess sur la colonne description
-df['processed_text'] = df['description'].progress_apply(lambda text: FPT.fullProcess(str(text)))
-df = df.dropna(subset= ['processed_text'])
-df.to_csv(f'Prediction/df_{language}_20221_{id_cs}_fullProcess.csv', index= False)
+df['final_content'] = df['description'].progress_apply(lambda text: FPT.fullProcess(str(text)))
+df = df.dropna(subset= ['final_content'])
+df.to_csv(f'Prediction/df_{language}_{currentDate}_{id_cs}_fullProcess.csv', index= False)
 
 def getAllScores(text):
     npArray = getPredictionArray(modelChoosen, text)
@@ -89,13 +89,13 @@ def getAllScores(text):
 
 ##### On lance le apply pour obtenir le dominant topic et le score dominant
 print("Prediction des dominant topic")
-df['dominant topic'] = df['processed_text'].progress_apply(lambda text: getAllScores(text)[0])
+df['dominant topic'] = df['final_content'].progress_apply(lambda text: getAllScores(text)[0])
 print("Prediction des dominant score")
-df['dominant score'] = df['processed_text'].progress_apply(lambda text: getAllScores(text)[1])
+df['dominant score'] = df['final_content'].progress_apply(lambda text: getAllScores(text)[1])
 
 #### On lance le apply pour avoir le score pour chaque theme
 print("Prediction multilabels")
-df['score_PCT'] = df['processed_text'].progress_apply(lambda text: getAllScores(text)[-1])
+df['score_PCT'] = df['final_content'].progress_apply(lambda text: getAllScores(text)[-1])
 
 df['label1'] = df["score_PCT"].apply(lambda x: list(x.keys())[0] if list(x.values())[0]>0 else "None")
 df['label2'] = df["score_PCT"].apply(lambda x: list(x.keys())[1] if list(x.values())[1]>0 else "None")
@@ -104,4 +104,4 @@ df['label4'] = df["score_PCT"].apply(lambda x: list(x.keys())[3] if list(x.value
 df['label5'] = df["score_PCT"].apply(lambda x: list(x.keys())[4] if list(x.values())[4]>0 else "None")
 
 
-df.to_csv(f"Prediction/petitions_{language}_20231_predicted_{id_cs}_multilabels.csv", index= False)
+df.to_csv(f"Prediction/petitions_{language}_{currentDate}_predicted_{id_cs}_multilabels.csv", index= False)

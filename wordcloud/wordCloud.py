@@ -1,12 +1,11 @@
 import stylecloud
 import pandas as pd
 
-# modelsList = ['FR_CS_C20', 'FR_CS_1720', 'FR_CS_1316', 'FR_CS_C21', 'FR_CS_1821', 'FR_CS_1417']
-# modelsList = ['ES_CS_C20']
-modelsList = ['EN_CS_C21']
-model = modelsList[0]
+modelsList = ['FR_CS_1518', 'FR_CS_1922']
+# choix 
+model = modelsList[1]
 
-df = pd.read_csv(f'Prediction/petitions_en_20221_predicted_{model}.csv')
+df = pd.read_csv(f'Prediction/petitions_fr_20231_predicted_{model}.csv')
 df = df[df['dominant topic'] != "None"]
 df['year'] = pd.DatetimeIndex(df.date).year
 if len(model.split('_')[-1]) == 4:
@@ -63,22 +62,22 @@ dict_names = {
 
 frMask_dict = {
     "Environnement":"fas fa-leaf",
-    "Vie_Locale":"fas fa-university",
+    "Vie Locale":"fas fa-university",
     "Education":"fas fa-graduation-cap",
     "Justice":"fas fa-gavel",
-    "Justice_Economique":"fas fa-euro-sign",
-    "Droit_des_femmes":"fas fa-female",
+    "Justice Economique":"fas fa-euro-sign",
+    "Droit des femmes":"fas fa-female",
     "None":"fas fa-times",
     "Mobilité":"fas fa-car-side",
-    "Droit_de_l'enfance":"fas fa-child",
-    "Sport_et_Médias":"fas fa-baseball-ball",
+    "Droit de l’enfance":"fas fa-child",
+    "Sport et Médias":"fas fa-baseball-ball",
     "Sport":"fas fa-baseball-ball",
     "Politique":"fas fa-comments",
     "Santé":"fas fa-heartbeat",
-    "Protection_Animale":"fas fa-paw",
+    "Protection Animale":"fas fa-paw",
     "Covid19":"fas fa-virus",
     "Médias":"fas fa-tv",
-    "Santé_-_Précaution_Ondes": "fas fa-broadcast-tower"
+    "Santé - Précaution Ondes": "fas fa-broadcast-tower"
 }
 
 esMask_dict = {
@@ -118,24 +117,23 @@ themes = df['dominant topic'].unique()
 
 
 for topic in themes:
-    if topic == 'Entertainment':
-        petition = list(df[df['dominant topic'] == topic]['processed_text'])
-        petition_word = [str(text).split() for text in petition]
-        flatlist = [item for sublist in petition_word for item in sublist]
-        
-        texte = ' '.join(flatlist)
-        name = dict_names[topic]
-        text_file = open(f'wordcloud/{name}.txt', "w")
-        n = text_file.write(texte)
-        text_file.close()
-        
-        stylecloud.gen_stylecloud(file_path=f'wordcloud/{name}.txt',
-                            icon_name=enMask_dict[topic],
-                            palette='cartocolors.qualitative.Pastel_3',
-                            background_color='white',
-                            output_name=f'wordcloud/{model}/{name}.png',
-                            max_words=250,
-                            collocations=False,
-                            stopwords = True
-                            )
-        print(topic)   
+    petition = list(df[df['dominant topic'] == topic]['final_content'])
+    petition_word = [str(text).split() for text in petition]
+    flatlist = [item for sublist in petition_word for item in sublist]
+    
+    texte = ' '.join(flatlist)
+    name = dict_names[topic]
+    text_file = open(f'wordcloud/{name}.txt', "w")
+    n = text_file.write(texte)
+    text_file.close()
+    
+    stylecloud.gen_stylecloud(file_path=f'wordcloud/{name}.txt',
+                        icon_name=frMask_dict[topic],
+                        palette='cartocolors.qualitative.Pastel_3',
+                        background_color='white',
+                        output_name=f'wordcloud/{model}/{name}.png',
+                        max_words=250,
+                        collocations=False,
+                        stopwords = True
+                        )
+    print(topic)   
